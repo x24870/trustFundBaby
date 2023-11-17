@@ -1,0 +1,3 @@
+[submodule "trustFundBaby/lib/forge-std"]
+	path = trustFundBaby/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
