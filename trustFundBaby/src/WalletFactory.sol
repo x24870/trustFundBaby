@@ -11,10 +11,11 @@ contract WalletFactory {
     event WalletCreated(address walletAddress, address owner);
 
     // Function to create a new wallet
-    function createWallet() public {
+    function createWallet() public returns (address) {
         Wallet wallet = new Wallet(msg.sender);
         wallets.push(wallet);
         emit WalletCreated(address(wallet), msg.sender);
+        return address(wallet);
     }
 
     // Function to get the total number of wallets created
