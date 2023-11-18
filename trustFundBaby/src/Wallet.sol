@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import {
+    IEAS,
+    Attestation
+} from "./EAS.sol";
+
 contract Wallet {
     address public owner;
     mapping(address => uint) public balances;
     mapping(address => uint) public nonces;
     uint public lastTransactionTime; // Variable to store the timestamp of the last transaction
     uint public transactionTimeLimit; // User-defined time period limit
+    IEAS eas;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
@@ -19,9 +25,11 @@ contract Wallet {
         _;
     }
 
-    constructor(address _owner) {
+    constructor(address _owner, address _eas) {
         owner = _owner;
         transactionTimeLimit = 365 days; // Default to 1 year, can be changed by owner
+        lastTransactionTime = block.timestamp; // Set the last transaction time to the current block timestamp
+        eas = IEAS(_eas);
     }
 
     // Function for owner to set the time period
@@ -60,7 +68,12 @@ contract Wallet {
     }
 
     // Function to transfer ownership if the last transaction is beyond the limit
-    function transferOwnership(address newOwner) public onlyOwner lastTransactionBeyondLimit {
+    function transferOwnership(address newOwner, bytes32 attestUID) public onlyOwner lastTransactionBeyondLimit {
+        // verify attestation
+        require(eas.isAttestationValid(attestUID), "Attestation is not valid");
+        Attestation memory att = eas.getAttestation(attestUID);
+        require(att.attester == owner, "Attestation not from owner");
+        // transfer ownership
         require(newOwner != address(0), "New owner cannot be the zero address");
         owner = newOwner;
     }
