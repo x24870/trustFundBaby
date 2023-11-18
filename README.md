@@ -1,4 +1,4 @@
-# AnonAA
+# TrustFundBaby
 
 *This project is built at the ETHGlobal Istanbul hackathon.  
 
