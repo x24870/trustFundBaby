@@ -35,6 +35,8 @@ contract GetAttestation is Script {
         console2.log("Attestation ts: %s", att.time);
         console2.log("Valid: %s", eas.isAttestationValid(uid));
         console2.log("data: %s", bytesToHexString(att.data));
+        console2.log("addr: %s", bytes32ToAddress(bytes32(att.data)));
+        
         console2.log("schema: %s", string(abi.encodePacked(att.schema)));
         console2.log("attester: %s", att.attester);
 
@@ -68,6 +70,10 @@ contract GetAttestation is Script {
         }
 
         return hexString;
+    }
+
+    function bytes32ToAddress(bytes32 b) public pure returns (address) {
+        return address(uint160(uint256(b)));
     }
 
 
