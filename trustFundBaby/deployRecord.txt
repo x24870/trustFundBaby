@@ -28,3 +28,13 @@
     │   └─ ← 2889 bytes of code
     ├─ emit WalletCreated(: Wallet: [0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190], : 0x00B9829EFEcfc18aD792298C75C5AcAB37B99E48)
     └─ ← 0x0000000000000000000000001726fff5d576a3185bbd56b1a1df6abd58383190
+
+-----------------------------------LINEA GOERLI---------------------------
+ [892075] → new WalletFactory@0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187
+    └─ ← 3670 bytes of code
+
+  [892477] 0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187::createWallet() 
+    ├─ [689387] → new Wallet@0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190
+    │   └─ ← 2889 bytes of code
+    ├─ emit WalletCreated(: Wallet: [0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190], : 0x00B9829EFEcfc18aD792298C75C5AcAB37B99E48)
+    └─ ← 0x0000000000000000000000001726fff5d576a3185bbd56b1a1df6abd58383190
