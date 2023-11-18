@@ -8,8 +8,7 @@ import {
 
 contract Wallet {
     address public owner;
-    mapping(address => uint) public balances;
-    mapping(address => uint) public nonces;
+    uint public nonce; // Single nonce for the owner
     uint public lastTransactionTime; // Variable to store the timestamp of the last transaction
     uint public transactionTimeLimit; // User-defined time period limit
     IEAS eas;
@@ -39,35 +38,33 @@ contract Wallet {
         transactionTimeLimit = _timeLimit;
     }
 
-    function deposit(uint _nonce) public payable {
+    // Function for depositing Ether into the wallet
+    function deposit() public payable {
         require(msg.value > 0, "Deposit amount must be greater than 0");
-        require(nonces[msg.sender] == _nonce, "Incorrect nonce");
-        balances[msg.sender] += msg.value;
-        nonces[msg.sender]++;
         lastTransactionTime = block.timestamp; // Update the last transaction time
     }
 
-    function withdraw(uint _amount, uint _nonce) public onlyOwner {
-        require(balances[owner] >= _amount, "Insufficient balance");
-        require(nonces[owner] == _nonce, "Incorrect nonce");
+    // Function for the owner to withdraw Ether from the wallet
+    function withdraw(uint _amount) public onlyOwner {
+        require(address(this).balance >= _amount, "Insufficient balance");
         payable(owner).transfer(_amount);
-        balances[owner] -= _amount;
-        nonces[owner]++;
         lastTransactionTime = block.timestamp; // Update the last transaction time
     }
 
+    // Function to check the balance of the wallet
     function getBalance() public view returns (uint) {
-        return balances[owner];
+        return address(this).balance;
     }
 
     // Function to interact with other contracts
     function executeTransaction(address _to, uint _value, bytes memory _data, uint _nonce) public onlyOwner {
-        require(nonces[owner] == _nonce, "Incorrect nonce");
-        nonces[owner]++;
+        require(_nonce == nonce, "Incorrect nonce"); // Validate nonce
+        nonce++; // Increment the nonce
         (bool success, ) = _to.call{value: _value}(_data);
         require(success, "Transaction failed");
-        lastTransactionTime = block.timestamp; // Update the last transaction time
+        lastTransactionTime = block.timestamp;
     }
+
 
     // Function to transfer ownership if the last transaction is beyond the limit
     function transferOwnership(bytes32 attestUID) public lastTransactionBeyondLimit {
@@ -81,6 +78,7 @@ contract Wallet {
         owner = newOwner;
     }
 
+    // Helper function to get the target address from an attestation
     function getTargetAddress(Attestation memory att) internal returns (address) {
         // check schema UID
         require(att.schema == schemaUID, "Schema UID does not match");
@@ -88,6 +86,7 @@ contract Wallet {
         return bytes32ToAddress(bytes32(att.data));
     }
 
+    // Helper function to convert bytes32 to address
     function bytes32ToAddress(bytes32 b) private pure returns (address) {
         return address(uint160(uint256(b)));
     }
