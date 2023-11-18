@@ -1,0 +1,30 @@
+---------------------------------ARB GOERLI----------------------------
+
+  [1005826] → new WalletFactory@0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187
+    └─ ← 4197 bytes of code
+
+  [954878] 0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187::createWallet() 
+    ├─ [794680] → new Wallet@0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190
+    │   └─ ← 3415 bytes of code
+    ├─ emit WalletCreated(: Wallet: [0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190], : 0x00B9829EFEcfc18aD792298C75C5AcAB37B99E48)
+    └─ ← 0x0000000000000000000000001726fff5d576a3185bbd56b1a1df6abd58383190
+
+----------------------------------BASE GOERLI---------------------------
+  [892075] → new WalletFactory@0x2A6120978D3F868299AA020303b93B9a90f257CF
+    └─ ← 3670 bytes of code
+
+  [892477] 0x2A6120978D3F868299AA020303b93B9a90f257CF::createWallet() 
+    ├─ [689387] → new Wallet@0xd1521f24D6f5F10E4a6b03cc143a91227d13F6CE
+    │   └─ ← 2889 bytes of code
+    ├─ emit WalletCreated(: Wallet: [0xd1521f24D6f5F10E4a6b03cc143a91227d13F6CE], : 0x00B9829EFEcfc18aD792298C75C5AcAB37B99E48)
+    └─ ← 0x000000000000000000000000d1521f24d6f5f10e4a6b03cc143a91227d13f6ce
+
+-----------------------------------SCROLL SEPOLIA-----------------------------
+  [892075] → new WalletFactory@0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187
+    └─ ← 3670 bytes of code
+
+[892477] 0xCd3933B359A73DEBbDcfd0E6C3a6BB36f114E187::createWallet() 
+    ├─ [689387] → new Wallet@0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190
+    │   └─ ← 2889 bytes of code
+    ├─ emit WalletCreated(: Wallet: [0x1726Fff5d576A3185BBD56b1A1Df6AbD58383190], : 0x00B9829EFEcfc18aD792298C75C5AcAB37B99E48)
+    └─ ← 0x0000000000000000000000001726fff5d576a3185bbd56b1a1df6abd58383190
