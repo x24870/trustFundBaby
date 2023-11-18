@@ -85,12 +85,16 @@ contract Wallet {
         // check schema UID
         require(att.schema == schemaUID, "Schema UID does not match");
         // parse attestation data
-        // bytes memory data = att.data;
         return bytes32ToAddress(bytes32(att.data));
-
     }
 
     function bytes32ToAddress(bytes32 b) private pure returns (address) {
         return address(uint160(uint256(b)));
     }
+
+    // Receive function to handle receiving Ether with no data
+    receive() external payable {}
+
+    // Fallback function to handle receiving Ether with data
+    fallback() external payable {}
 }
