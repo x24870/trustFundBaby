@@ -2,22 +2,24 @@ include .env
 export $(shell sed 's/=.*//' .env)
 
 SCROLL_SEPOLIA="https://scroll-sepolia.blockpi.network/v1/rpc/public"
-ARB_GOERLI="https://arbitrum-goerli.blockpi.network/v1/rpc/public"
-BASE_GOERLI="https://base-goerli.public.blastapi.io"
-LINEA_GOERLI="https://rpc.goerli.linea.build"
-
 deployFactoryScroll:
 	forge script --rpc-url=${SCROLL_SEPOLIA} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/WalletFactory.s.sol --broadcast --verify -vvvv;
 deployWalletScroll:
 	forge script --rpc-url=${SCROLL_SEPOLIA} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/Wallet.s.sol --broadcast --verify -vvvv;
+
+ARB_GOERLI="https://arbitrum-goerli.blockpi.network/v1/rpc/public"
 deployFactoryArb:
 	forge script --rpc-url=${ARB_GOERLI} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/WalletFactory.s.sol --broadcast --verify -vvvv;
 deployWalletArb:
 	forge script --rpc-url=${ARB_GOERLI} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/Wallet.s.sol --broadcast --verify -vvvv;
+
+BASE_GOERLI="https://base-goerli.public.blastapi.io"
 deployFactoryBase:
 	forge script --rpc-url=${BASE_GOERLI} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/WalletFactory.s.sol --broadcast --verify -vvvv;
 deployWalletBase:
 	forge script --rpc-url=${BASE_GOERLI} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/Wallet.s.sol --broadcast --verify -vvvv;
+
+LINEA_GOERLI="https://rpc.goerli.linea.build"
 deployFactoryLinea:
 	forge script --rpc-url=${LINEA_GOERLI} --private-key=${GOERLI_PRIVATE_KEY} --legacy script/WalletFactory.s.sol --broadcast --verify -vvvv;
 deployWalletLinea:
