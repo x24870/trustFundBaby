@@ -70,7 +70,7 @@ contract Wallet {
     }
 
     // Function to transfer ownership if the last transaction is beyond the limit
-    function transferOwnership(bytes32 attestUID) public onlyOwner lastTransactionBeyondLimit {
+    function transferOwnership(bytes32 attestUID) public lastTransactionBeyondLimit {
         // verify attestation
         require(eas.isAttestationValid(attestUID), "Attestation is not valid");
         Attestation memory att = eas.getAttestation(attestUID);
