@@ -13,6 +13,7 @@ contract Wallet {
     uint public lastTransactionTime; // Variable to store the timestamp of the last transaction
     uint public transactionTimeLimit; // User-defined time period limit
     IEAS eas;
+    bytes32 schemaUID;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
@@ -25,11 +26,12 @@ contract Wallet {
         _;
     }
 
-    constructor(address _owner, address _eas) {
+    constructor(address _owner, address _eas, bytes32 _schemaUID) {
         owner = _owner;
         transactionTimeLimit = 365 days; // Default to 1 year, can be changed by owner
         lastTransactionTime = block.timestamp; // Set the last transaction time to the current block timestamp
         eas = IEAS(_eas);
+        schemaUID = _schemaUID;
     }
 
     // Function for owner to set the time period
@@ -68,13 +70,27 @@ contract Wallet {
     }
 
     // Function to transfer ownership if the last transaction is beyond the limit
-    function transferOwnership(address newOwner, bytes32 attestUID) public onlyOwner lastTransactionBeyondLimit {
+    function transferOwnership(bytes32 attestUID) public onlyOwner lastTransactionBeyondLimit {
         // verify attestation
         require(eas.isAttestationValid(attestUID), "Attestation is not valid");
         Attestation memory att = eas.getAttestation(attestUID);
         require(att.attester == owner, "Attestation not from owner");
         // transfer ownership
+        address newOwner = getTargetAddress(att);
         require(newOwner != address(0), "New owner cannot be the zero address");
         owner = newOwner;
+    }
+
+    function getTargetAddress(Attestation memory att) internal returns (address) {
+        // check schema UID
+        require(att.schema == schemaUID, "Schema UID does not match");
+        // parse attestation data
+        // bytes memory data = att.data;
+        return bytes32ToAddress(bytes32(att.data));
+
+    }
+
+    function bytes32ToAddress(bytes32 b) private pure returns (address) {
+        return address(uint160(uint256(b)));
     }
 }

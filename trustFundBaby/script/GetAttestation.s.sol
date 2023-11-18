@@ -35,6 +35,7 @@ contract GetAttestation is Script {
         console2.log("Attestation ts: %s", att.time);
         console2.log("Valid: %s", eas.isAttestationValid(uid));
         console2.log("data: %s", bytesToHexString(att.data));
+        console2.log("schema: %s", string(abi.encodePacked(att.schema)));
         console2.log("attester: %s", att.attester);
 
         ISchemaRegistry registry = ISchemaRegistry(address(0x4200000000000000000000000000000000000020));

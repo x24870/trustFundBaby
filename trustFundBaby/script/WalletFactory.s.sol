@@ -15,7 +15,8 @@ contract DeployWalletFactory is Script {
 
     function deployWalletFactory() public returns (address) {
         address eas = address(0x4200000000000000000000000000000000000021);
-        WalletFactory factory = new WalletFactory(eas);
+        bytes32 schemaUID = 0xbe92c980d4766a5d83d746cfec0b5eccc79f925e42d9215159f10c34ac6825fa;
+        WalletFactory factory = new WalletFactory(eas, schemaUID);
         return address(factory);
     }
 
