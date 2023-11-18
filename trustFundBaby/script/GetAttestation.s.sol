@@ -28,18 +28,20 @@ contract GetAttestation is Script {
     function run() external {
         // vm.startBroadcast();
         
-        bytes32 uid = 0xdd1ba51844b60276294490c24d3d272625c68868dba835ac9602c65a26149791;
+        bytes32 uid = 0xd096cd12fe7584018409d33d476ec130ae78366b98f86d42576ff52e52e5e65d;
         IEAS eas = IEAS(address(0x4200000000000000000000000000000000000021));
         Attestation memory att = eas.getAttestation(uid);
         console2.log("Attestation: %s", string(abi.encodePacked(att.uid)));
         console2.log("Attestation ts: %s", att.time);
+        console2.log("Valid: %s", eas.isAttestationValid(uid));
+        console2.log("data: %s", bytesToHexString(att.data));
+        console2.log("attester: %s", att.attester);
 
         ISchemaRegistry registry = ISchemaRegistry(address(0x4200000000000000000000000000000000000020));
         bytes32 suid = 0xbe92c980d4766a5d83d746cfec0b5eccc79f925e42d9215159f10c34ac6825fa;
         SchemaRecord memory schema = registry.getSchema(suid);
         console2.log("Schema: %s", string(abi.encodePacked(schema.uid)));
 
-        console2.log("TEST: %s", bytes32ToString(schema.uid));
         console2.log("TEST revocable: %s", (schema.revocable));
 
         // vm.stopBroadcast();
@@ -47,28 +49,25 @@ contract GetAttestation is Script {
     }
 
 
-    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
-    // Temporary memory buffer
-    bytes memory buffer = new bytes(32);
-    uint256 charCount = 0;
+    // Function to convert a single byte to a hexadecimal string
+    function byteToHexChar(bytes1 b) internal pure returns (string memory) {
+        bytes memory hexChars = "0123456789abcdef";
+        bytes memory hexString = new bytes(2);
+        hexString[0] = hexChars[uint8(b) >> 4];
+        hexString[1] = hexChars[uint8(b) & 0x0f];
+        return string(hexString);
+    }
 
-    // Copy only non-zero bytes
-    for (uint256 i = 0; i < 32; i++) {
-        if (_bytes32[i] != 0) {
-            buffer[charCount] = _bytes32[i];
-            charCount++;
-        } else {
-            break;
+    // Function to convert bytes to a hexadecimal string
+    function bytesToHexString(bytes memory data) public pure returns (string memory) {
+        string memory hexString = "";
+
+        for (uint i = 0; i < data.length; i++) {
+            hexString = string(abi.encodePacked(hexString, byteToHexChar(data[i])));
         }
-    }
 
-    bytes memory bytesBuffer = new bytes(charCount);
-    for (uint256 i = 0; i < charCount; i++) {
-        bytesBuffer[i] = buffer[i];
+        return hexString;
     }
-
-    return string(bytesBuffer);
-}
 
 
 }
